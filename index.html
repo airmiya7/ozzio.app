@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PC（パーソナルコンピューター）診断処方箋</title>
+    <style>
+/* 例示用のスタイル */
+html {
+    font-size: 62.5%;
+}
+body {
+    box-sizing: border-box;
+    max-width: 980px;
+    margin: auto;
+    padding: 15px;
+    font-size: 1.4rem;
+    font-family: sans-serif;
+}
+code {
+    padding: 0.2rem;
+    background: hsl(0, 0%, 95%);
+    font-size: 1.4rem;
+    font-family: consolas, monospace;
+}
+
+h1 {
+    font-size: 20px;
+}
+.message {
+    padding: 10px 0;
+}
+
+/** 入力項目 */
+input, textarea, select {
+    font: inherit;
+    margin: 0;
+    vertical-align: middle;
+    border: 1px solid #bbb;
+}
+@media (max-width: 680px) {
+    input, textarea, select {
+        font-size: 1.6rem;
+    }
+}
+/** 手入力、選択肢 */
+input, select {
+    padding: 4px 6px;
+    max-width: 100%;
+}
+/** テキストエリア */
+textarea {
+    padding: 4px 6px;
+}
+
+/** 入力項目を伸ばす */
+.full-field {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/** ボタン */
+button {
+    font: inherit;
+    margin: 0;
+    padding: 8px 20px;
+    border: none;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    background: #e0e0e0;
+    vertical-align: middle;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: 0.2s all;
+    user-select: none;
+}
+button:hover {
+    opacity: 0.8;
+}
+
+/** ラベル */
+label {
+    cursor: pointer;
+}
+
+/** フォーム */
+form {
+    font-size: 13px;
+}
+/** フォームテーブル */
+form table {
+    width: 100%;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+}
+form th, form td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    font-weight: normal;
+    vertical-align: middle;
+}
+form th {
+    background: #f9f9f9;
+    text-align: right;
+    width: 150px;
+}
+
+/** フォームパーツ */
+input {
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+}
+select {
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+}
+
+/** 必須マーク */
+.require-mark {
+    color: red;
+}
+
+/** フォーム下部 */
+.form-footer {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+
+/** 小テーブル */
+dl {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+dt{
+    width: 200px;
+    float: left;
+}
+dt::after{
+    content: "："
+}
+
+/** テキスト改行 */
+#text-area {
+    /* white-space: normal; */
+    /* white-space: nowrap; */
+    /* white-space: pre; */
+    /* white-space: pre-wrap; */
+    /* white-space: pre-line; */
+    white-space: break-spaces;
+}
+</style>
+</head>
+<body>
+    <h1>PC（パーソナルコンピューター）診断処方箋</h1>
+
+    <div id="app">
+        <form method="POST" @submit="submit">
+            <table>
+                <tr>
+                    <th>お客様名</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{Customer}}
+                        </span>
+                        <span v-else>
+                            <input type="text" name="Customer" size="10" placeholder="ウマダ" v-model="Customer">様
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>受付日</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{Date}}
+                        </span>
+                        <span v-else>
+                            <input type="date" name="Date" size="10" placeholder="" v-model="Date">
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>点検担当</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{inspector}}
+                        </span>
+                        <span v-else>
+                            <input type="text" name="inspector" class="full-field" placeholder="" v-model="inspector">
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>対象</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            <dl>
+                                <dt>メーカー</dt>
+                                <dd>{{Maker_name}}</dd>
+                                <dt>型番</dt>
+                                <dd>{{Model_name}}</dd>
+                                <dt>シリアルNo.</dt>
+                                <dd>{{Serial_number}}</dd>
+                            </dl>
+                        </span>
+                        <span v-else>
+                                <dl>
+                                    <dt>メーカー</dt>
+                                    <dd><input type="text" name="Maker_name" size="20" placeholder="" v-model="Maker_name"></dd>
+                                    <dt>型番</dt>
+                                    <dd><input type="text" name="Model_name" size="20" placeholder="" v-model="Model_name"></dd>
+                                    <dt>シリアルNo.</dt>
+                                    <dd><input type="text" name="Serial_number" size="20" placeholder="" v-model="Serial_number"></dd>
+                                </dl>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>お困りごと</th>
+                    <td>
+                        <span v-if="confirmMode" id="text-area">{{interview}}</span>
+                        <span v-else>
+                            電源ランプを押しても、電源ランプが光らない
+                            メーカーロゴが表示されない
+                            Windows・Macが起動しない
+                            見たことない画面やエラーが出る
+                            動きが遅い
+            
+                            画面が割れた
+                            ボタンが効かない
+                            電話帳の移行ができない
+                            メール・ショートメールが使えない
+                            ログインパスワードが分からなくなった
+                            インターネットに繋がらない
+                            LINEや写真のデータをバックアップしたい
+                            <textarea type="textarea" name="interview" class="full-field" placeholder="" v-model="interview" style="height: 200px;"></textarea>
+                        </span>
+                    </td>
+                </tr>
+                <tr><th>診断結果</th><td>
+                    <span v-if="confirmMode" id="text-area">{{Diagnosis}}</span>
+                    <span v-else>
+                        <textarea type="textarea" name="Diagnosis" class="full-field" placeholder="" v-model="Diagnosis" style="height: 400px;"></textarea>
+                    </span>
+                </td></tr>
+                <tr>
+                    <th>OS 種類</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{OS}}
+                        </span>
+                        <span v-else>
+                            <select v-model="OS" name="OS">
+                                <option>Windows 11</option>
+                                <option>Windows 10</option>
+                                <option>Windows 8.1</option>
+                                <option>Windows 8</option>
+                                <option>Windows 7</option>
+                                <option>Windows Vista</option>
+                                <option>Windows XP</option>
+                                <option>Windows 2000</option>
+                                <option>Windows ME</option>
+                                <option>Windows 98</option>
+                                <option>Windows 95</option>
+                                <option>macOS 13 Ventura</option>
+                                <option>macOS 12 Monterey</option>
+                                <option>macOS 11 Big Sur</option>
+                                <option>macOS 10.15 Catalina</option>
+                                <option>macOS 10.14 Mojave</option>
+                                <option>macOS 10.13 High Sierra</option>
+                                <option>macOS 10.12 Sierra</option>
+                                <option>OS X 10.11 El Capitan</option>
+                                <option>OS X 10.10 Yosemite</option>
+                                <option>OS X 10.9 Mavericks</option>
+                                <option>OS X 10.8 Mountain Lion</option>
+                                <option>Mac OS X 10.7 Lion</option>
+                                <option>Mac OS X 10.6 Snow Leopard</option>
+                                <option>Mac OS X 10.5 Leopard</option>
+                                <option>Mac OS X 10.4 Tiger</option>
+                                <option>Mac OS X 10.3 Panther</option>
+                                <option>Mac OS X 10.2 Jaguar</option>
+                                <option>Mac OS X 10.1 Puma</option>
+                                <option>Mac OS X 10.0 Cheetah</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>OS バージョン</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{OS_ver}}
+                        </span>
+                        <span v-else>
+                            <select v-model="OS_ver" name="OS_ver">
+                                <option>Version 22H2</option>
+                                <option>Version 21H2</option>
+                                <option>Version 21H1</option>
+                                <option>Version 20H2</option>
+                                <option>Version 2004</option>
+                                <option>Version 1909</option>
+                                <option>Version 1903</option>
+                                <option>Version 1809</option>
+                                <option>Version 1803</option>
+                                <option>Version 1709</option>
+                                <option>Version 1703</option>
+                                <option>Version 1607</option>
+                                <option>Version 1511</option>
+                                <option>Version 1507</option>
+                                <option>SP1</option>
+                                <option>SP2</option>
+                                <option>SP3</option>
+                                <option>SP4</option>
+                            </select>
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>ウィルス対策</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{AnchVirus}} {{AnchVirus_other}}
+                        </span>
+                        <span v-else>
+                            <select v-model="AnchVirus" name="AnchVirus">
+                                <option>カスペルスキー</option>
+                                <option>マカフィー トータルプロテクション</option>
+                                <option>マカフィー リブセーフ</option>
+                                <option>ウィルスバスター</option>
+                                <option>Norton Internet Security</option>
+                                <option>Microsoft Defender</option>
+                                <option>ソースネクスト・ウィルスセキュリティ</option>
+                                <option>ESET インターネットセキュリティ</option>
+                                <option>キングソフトセキュリティPro</option>
+                                <option>その他</option>
+                                <option>なし</option>
+                            </select>
+                            <input type="text" name="AnchVirus_other" size="50" placeholder="その他を選択時のみ入力" v-model="AnchVirus_other">
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>システム状態</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            <dl>
+                                <dt>通常起動</dt>
+                                <dd>{{Normal_boot}}　</dd>
+                                <dt>セーフモード起動</dt>
+                                <dd>{{Safe_boot}}　</dd>
+                                <dt>アップデート状態</dt>
+                                <dd>{{Lastest_update}}　</dd>
+                                <dt>システムエラー</dt>
+                                <dd>{{System_error}}　</dd>
+                                <dt>ウィルス感染</dt>
+                                <dd>{{Virus_Status}}　</dd>
+                                <dt>アドウェア・スパイウェア感染</dt>
+                                <dd>{{Adware_Status}}　</dd>
+                            </dl>
+                        </span>
+                        <span v-else>
+                            <dl>
+                                <dt>通常起動</dt>
+                                <dd>
+                                    <input type="radio" name="Normal_boot" v-model="Normal_boot" value="可能" checked="checked">
+                                    <label for="可能">可能</label>
+                                    <input type="radio" name="Normal_boot" v-model="Normal_boot" value="不可">
+                                    <label for="不可">不可</label>
+                                </dd>
+                                <dt>セーフモード起動</dt>
+                                <dd>
+                                    <input type="radio" name="Safe_boot" v-model="Safe_boot" value="可能" checked="checked">
+                                    <label for="可能">可能</label>
+                                    <input type="radio" name="Safe_boot" v-model="Safe_boot" value="不可">
+                                    <label for="不可">不可</label>
+                                </dd>
+                                <dt>アップデート状態</dt>
+                                <dd>
+                                    <input type="radio" name="Lastest_update" v-model="Lastest_update" value="最新" checked="checked">
+                                    <label for="最新">最新</label>
+                                    <input type="radio" name="Lastest_update" v-model="Lastest_update" value="要更新">
+                                    <label for="要更新">要更新</label>
+                                </dd>
+                                <dt>システムエラー</dt>
+                                <dd>
+                                    <input type="radio" name="System_error" v-model="System_error" value="あり">
+                                    <label for="あり">あり</label>
+                                    <input type="radio" name="System_error" v-model="System_error" value="なし" checked="checked">
+                                    <label for="なし">なし</label>
+                                </dd>
+                                <dt>ウィルス感染</dt>
+                                <dd>
+                                    <input type="radio" name="Virus_Status" v-model="Virus_Status" value="あり">
+                                    <label for="あり">あり</label>
+                                    <input type="radio" name="Virus_Status" v-model="Virus_Status" value="なし" checked="checked">
+                                    <label for="なし">なし</label>
+                                </dd>
+                                <dt>アドウェア・スパイウェア感染</dt>
+                                <dd>
+                                    <input type="radio" name="Adware_Status" v-model="Adware_Status" value="あり">
+                                    <label for="あり">あり</label>
+                                    <input type="radio" name="Adware_Status" v-model="Adware_Status" value="なし" checked="checked">
+                                    <label for="なし">なし</label>
+                                </dd>
+                            </dl>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>ハードウェア情報</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            <dl>
+                                <dt>CPU</dt>
+                                <dd>{{CPU_Name}}　</dd>
+                                <dt>メモリー容量</dt>
+                                <dd>{{Memory_Size}}　</dd>
+                                <dt>メモリー使用量</dt>
+                                <dd>{{Memory_Usage}}　</dd>
+                                <dt>メモリーエラー</dt>
+                                <dd>{{Memory_Status}}　</dd>
+                            </dl>
+                        </span>
+                        <span v-else>
+                            <dl>
+                                <dt>CPU</dt>
+                                <dd><input type="text" name="CPU_Name" size="20" placeholder="" v-model="CPU_Name"></dd>
+                                <dt>メモリー容量</dt>
+                                <dd>
+                                    <select v-model="Memory_Size" name="Memory_Size">
+                                        <option>512MB</option>
+                                        <option>1GB</option>
+                                        <option>2GB</option>
+                                        <option>4GB</option>
+                                        <option>6GB</option>
+                                        <option>8GB</option>
+                                        <option>10GB</option>
+                                        <option>12GB</option>
+                                        <option>16GB</option>
+                                        <option>24GB</option>
+                                        <option>32GB</option>
+                                        <option>64GB</option>
+                                        <option>128GB</option>
+                                    </select>
+                                </dd>
+                                <dt>メモリー使用量</dt>
+                                <dd>
+                                    <select v-model="Memory_Usage" name="Memory_Usage">
+                                        <option>0%</option>
+                                        <option>10%</option>
+                                        <option>20%</option>
+                                        <option>30%</option>
+                                        <option>40%</option>
+                                        <option>50%</option>
+                                        <option>60%</option>
+                                        <option>70%</option>
+                                        <option>80%</option>
+                                        <option>90%</option>
+                                        <option>100%</option>
+                                    </select>
+                                </dd>
+                                <dt>メモリーエラー</dt>
+                                <dd>
+                                    <input type="radio" name="Memory_Status" v-model="Memory_Status" value="あり" checked="checked">
+                                    <label for="あり">あり</label>
+                                    <input type="radio" name="Memory_Status" v-model="Memory_Status" value="なし">
+                                    <label for="なし">なし</label>
+                                </dd>
+                            </dl>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>HDD/SSD 状態</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            <dl>
+                                <dt>HDD/SSD名</dt>
+                                <dd>{{HDD_Name}}　</dd>
+                                <dt>容量</dt>
+                                <dd>{{HDD_Size}}GB</dd>
+                                <dt>使用時間</dt>
+                                <dd>{{HDD_Count}}回</dd>
+                                <dt>起動回数</dt>
+                                <dd>{{HDD_Usage}}時間</dd>
+                                <dt>HDD状態</dt>
+                                <dd>{{HDD_Status}}　</dd>
+                            </dl>
+                        </span>
+                        <span v-else>
+                            <dl>
+                                <dt>HDD/SSD名</dt>
+                                <dd><input type="text" name="HDD_Name" size="20" placeholder="" v-model="HDD_Name"></dd>
+                                <dt>容量</dt>
+                                <dd><input type="text" name="HDD_Size" size="20" placeholder="" v-model="HDD_Size">GB</dd>
+                                <dt>使用時間</dt>
+                                <dd><input type="text" name="HDD_Count" size="20" placeholder="" v-model="HDD_Count">回</dd>
+                                <dt>起動回数</dt>
+                                <dd><input type="text" name="HDD_Usage" size="20" placeholder="" v-model="HDD_Usage">時間</dd>
+                                <dt>HDD状態</dt>
+                                <dd>
+                                    <select v-model="HDD_Status" name="HDD_Status">
+                                        <option>S.M.A.R.T 正常</option>
+                                        <option>S.M.A.R.T 正常/ファイルシステム異常：要データ調査</option>
+                                        <option>S.M.A.R.T 異常/ファイルシステム正常：データ取り出し可</option>
+                                        <option>S.M.A.R.T 異常/ファイルシステム異常：要データ調査</option>
+                                        <option>BIOS認識せず</option>
+                                    </select>
+                                </dd>
+                            </dl>
+                        </span>
+                    </td>
+                </tr>
+
+
+
+            </table>
+            <div class="form-footer">
+                <button type="button" @click="back" v-if="confirmMode">修正</button>
+                <button type="submit" v-if="!confirmMode">確認</button>
+                
+                <button type="submit" v-else>リセット</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                // 確認画面か
+                confirmMode: false,
+
+                // 入力項目の値
+                Customer: '',
+
+                // 時間設定
+                Date :'',
+
+                // 点検担当
+                inspector: '',
+
+                // 型番等
+                Maker_name: '',
+                Model_name: '',
+                Serial_number: '',
+
+                // 診断内容
+                interview: '',
+                Diagnosis: '',
+
+                // System_Status
+                OS: '',
+                OS_ver: '',
+                Normal_boot: '',
+                Safe_boot: '',
+                Lastest_update: '',
+                System_error: '',
+                Virus_Status: '',
+                Adware_Status: '',
+
+                // Hardware_info
+                CPU_Name: '',
+                Memory_Usage: '',
+                Memory_Size: '',
+                Memory_Status: '',
+                HDD_Name: '',
+                HDD_Size: '',
+                HDD_Usage: '',
+                HDD_Count: '',
+                HDD_Status: '',
+
+                // Software_info
+                AnchVirus: '',
+                AnchVirus_other: '',
+
+
+            },
+            methods: {
+                /**
+                 * フォーム送信時
+                 */
+                submit: function(e) {
+                    if (!this.confirmMode) {
+                        this.confirmMode = true;
+                        e.preventDefault();
+                    }
+                    else {
+                        // 送信
+                    }
+                },
+                /**
+                 * 「戻る」ボタンクリック時
+                 */
+                back: function() {
+                    this.confirmMode = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
