@@ -8,31 +8,40 @@
     <style>
 /* 例示用のスタイル */
 html {
-    font-size: 62.5%;
+    font-size: 12px;
 }
 body {
     box-sizing: border-box;
     max-width: 980px;
     margin: auto;
     padding: 15px;
-    font-size: 1.4rem;
+    font-size: qwpx;
     font-family: sans-serif;
 }
-code {
-    padding: 0.2rem;
-    background: hsl(0, 0%, 95%);
-    font-size: 1.4rem;
-    font-family: consolas, monospace;
-}
+
 
 h1 {
-    font-size: 20px;
+    font-size: 30px;
+    line-height: 30px;
+    margin: 0;
+    padding: 0;
+}
+h2 {
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+.copyright {
+    text-align: center;
+    margin: 10px;
 }
 .message {
     padding: 10px 0;
 }
 
-/** 入力項目 */
+/* 入力項目 */
 input, textarea, select {
     font: inherit;
     margin: 0;
@@ -41,34 +50,33 @@ input, textarea, select {
 }
 @media (max-width: 680px) {
     input, textarea, select {
-        font-size: 1.6rem;
+        font-size: 12px;
     }
 }
-/** 手入力、選択肢 */
+/* 手入力、選択肢 */
 input, select {
-    padding: 4px 6px;
+    padding: 2.5px;
     max-width: 100%;
 }
-/** テキストエリア */
+/* テキストエリア */
 textarea {
-    padding: 4px 6px;
+    padding: 2.5px;
 }
 
-/** 入力項目を伸ばす */
+/* 入力項目を伸ばす */
 .full-field {
     box-sizing: border-box;
     width: 100%;
 }
 
-/** ボタン */
+/* ボタン */
 button {
     font: inherit;
     margin: 0;
     padding: 8px 20px;
     border: none;
     border: 1px solid #ccc;
-    border-bottom-width: 2px;
-    background: #e0e0e0;
+    background: #ffffff;
     vertical-align: middle;
     cursor: pointer;
     letter-spacing: 2px;
@@ -79,19 +87,19 @@ button:hover {
     opacity: 0.8;
 }
 
-/** ラベル */
+/* ラベル */
 label {
     cursor: pointer;
 }
 
-/** フォーム */
+/* フォーム */
 form {
-    font-size: 13px;
+    font-size: 12px;
 }
-/** フォームテーブル */
+/* フォームテーブル */
 form table {
     width: 100%;
-    margin-bottom: 30px;
+    margin-top: 20px;
     border: 1px solid #ddd;
     border-collapse: collapse;
 }
@@ -107,7 +115,7 @@ form th {
     width: 150px;
 }
 
-/** フォームパーツ */
+/* フォームパーツ */
 input {
     margin-top: 2.5px;
     margin-bottom: 2.5px;
@@ -117,19 +125,24 @@ select {
     margin-bottom: 2.5px;
 }
 
-/** 必須マーク */
+/* 必須マーク */
 .require-mark {
     color: red;
 }
 
-/** フォーム下部 */
+/* 注意 */
+.caution {
+    color: red;
+}
+
+/* フォーム下部 */
 .form-footer {
     margin-bottom: 30px;
     text-align: center;
 }
 
 
-/** 小テーブル */
+/* 小テーブル */
 dl {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -142,7 +155,16 @@ dt::after{
     content: "："
 }
 
-/** テキスト改行 */
+/* 挿絵 */
+
+#sign-mem {
+    background-image: url(images/mem.gif);
+    background-repeat:no-repeat;
+    background-position: bottom;
+    background-position: right;
+}
+
+/* テキスト改行 */
 #text-area {
     /* white-space: normal; */
     /* white-space: nowrap; */
@@ -154,19 +176,42 @@ dt::after{
 </style>
 </head>
 <body>
-    <h1>PC（パーソナルコンピューター）診断処方箋</h1>
-
     <div id="app">
         <form method="POST" @submit="submit">
+
+            <h1>
+                PC診断処方箋
+                <span v-if="confirmMode">
+                    （{{Customer_type}}）
+                </span>
+            </h1>
+            <h2>パーソナル</h2>
+            <h2>コンピューター</h2>
+
             <table>
                 <tr>
                     <th>お客様名</th>
                     <td>
                         <span v-if="confirmMode">
-                            {{Customer}}
+                            {{Customer}}様
                         </span>
                         <span v-else>
                             <input type="text" name="Customer" size="10" placeholder="ウマダ" v-model="Customer">様
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>メンバー登録</th>
+                    <td>
+                        <span v-if="confirmMode">
+                            {{Customer_type}}　{{Member_No}}
+                        </span>
+                        <span v-else>
+                            <input type="radio" name="Customer_type" v-model="Customer_type" value="一般のお客様" checked="checked">
+                            <label for="一般のお客様">一般のお客様</label>
+                            <input type="radio" name="Customer_type" v-model="Customer_type" value="メンバー会員様">
+                            <label for="メンバー会員様">メンバー会員様</label>
+                            <input type="text" name="Member_No" size="20" placeholder="メンバー番号" v-model="Member_No">
                         </span>
                     </td>
                 </tr>
@@ -243,19 +288,21 @@ dt::after{
                     <td>
                         <span v-if="confirmMode" id="text-area">{{interview}}</span>
                         <span v-else>
-                            電源ランプを押しても、電源ランプが光らない
-                            メーカーロゴが表示されない
-                            Windows・Macが起動しない
-                            見たことない画面やエラーが出る
-                            動きが遅い
-            
-                            画面が割れた
-                            ボタンが効かない
-                            電話帳の移行ができない
-                            メール・ショートメールが使えない
-                            ログインパスワードが分からなくなった
-                            インターネットに繋がらない
-                            LINEや写真のデータをバックアップしたい
+                            <select v-model="interview" name="interview">
+                                <option>電源ランプを押しても、電源ランプが光らない</option>
+                                <option>メーカーロゴが表示されない</option>
+                                <option>Windows・Macが起動しない</option>
+                                <option>見たことない画面やエラーが出る</option>
+                                <option>動きが遅い</option>
+                                <option>画面が割れた</option>
+                                <option>ボタンが効かない</option>
+                                <option>電話帳の移行ができない</option>
+                                <option>メール・ショートメールが使えない</option>
+                                <option>ログインパスワードが分からなくなった</option>
+                                <option>インターネットに繋がらない</option>
+                                <option>LINEや写真のデータをバックアップしたい</option>
+                            </select>
+                            <span class="caution">※選択しなおすと下のテキストエリアに入力した内容が消去されます。</span>
                             <textarea type="textarea" name="interview" class="full-field" v-model="interview" style="height: 200px;"></textarea>
                         </span>
                     </td>
@@ -263,6 +310,18 @@ dt::after{
                 <tr><th>診断結果</th><td>
                     <span v-if="confirmMode" id="text-area">{{Diagnosis}}</span>
                     <span v-else>
+                        <select v-model="Diagnosis" name="Diagnosis">
+                            <option>電源回路またはマザーボードに障害が発生しています。メーカーでの修理が必要です。</option>
+                            <option>Windowsのシステムに不具合が発生しています。Windowsの再インストールまたはリカバリーが必要です。</option>
+                            <option>Macのシステムに不具合が発生しています。MacOSの再インストールが必要です。</option>
+                            <option>アドウェアに感染しています。アドウェアの削除まはたリカバリーが必要です。</option>
+                            <option>マルウェアに感染しています。マルウェアの削除まはたリカバリーが必要です。</option>
+                            <option>偽の警告画面です。Webサイト上での表示だけでPC本体に実害はありませんが、履歴の削除やアクセス権等を解除する必要があります。</option>
+                            <option>HDDのアクセス速度が不足しており常に100%になっているため処理待ちが発生しています。SSDへの換装がおすすめです。</option>
+                            <option>HDDが故障しています。HDDまたはSSDの交換が必要です。データ救出には調査が必要です。</option>
+                            <option>メーカーでの修理が必要です。</option>
+                        </select>
+                        <span class="caution">※選択しなおすと下のテキストエリアに入力した内容が消去されます。</span>
                         <textarea type="textarea" name="Diagnosis" class="full-field" v-model="Diagnosis" style="height: 400px;"></textarea>
                     </span>
                 </td></tr>
@@ -459,18 +518,21 @@ dt::after{
                     <th>ハードウェア情報</th>
                     <td>
                         <span v-if="confirmMode">
-                            <dl>
-                                <dt>CPU</dt>
-                                <dd>{{CPU_Name}}　</dd>
-                                <dt>メモリー容量</dt>
-                                <dd>{{Memory_Size}}{{Memory_Size_other}}　</dd>
-                                <dt>メモリー使用量</dt>
-                                <dd>{{Memory_Usage}}　</dd>
-                                <dt>メモリーエラー</dt>
-                                <dd>{{Memory_Status}}　</dd>
-                            </dl>
+                            <div id="sign-mem">
+                                <dl>
+                                    <dt>CPU</dt>
+                                    <dd>{{CPU_Name}}　</dd>
+                                    <dt>メモリー容量</dt>
+                                    <dd>{{Memory_Size}}{{Memory_Size_other}}　</dd>
+                                    <dt>メモリー使用量</dt>
+                                    <dd>{{Memory_Usage}}　</dd>
+                                    <dt>メモリーエラー</dt>
+                                    <dd>{{Memory_Status}}　</dd>
+                                </dl>
+                            </div>
                         </span>
                         <span v-else>
+                            <div id="sign-mem">
                             <dl>
                                 <dt>CPU</dt>
                                 <dd><input type="text" name="CPU_Name" size="20" v-model="CPU_Name"></dd>
@@ -493,7 +555,7 @@ dt::after{
                                         <option>128GB</option>
                                         <option></option>
                                     </select>
-                                    <input type="text" name="Memory_Size_other" size="50" placeholder="選択肢がない場合に入力（単位必須：GB等）" v-model="AnchVirus_other">
+                                    <input type="text" name="Memory_Size_other" size="50" placeholder="選択肢がない場合に入力（単位必須：GB等）" v-model="Memory_Size_other">
                                 </dd>
                                 <dt>メモリー使用量</dt>
                                 <dd>
@@ -519,6 +581,7 @@ dt::after{
                                     <label for="なし">なし</label>
                                 </dd>
                             </dl>
+                        </div>
                         </span>
                     </td>
                 </tr>
@@ -563,15 +626,13 @@ dt::after{
                         </span>
                     </td>
                 </tr>
-
-
-
             </table>
+            <div class="copyright">（C）YM （C）PC DEPOTスマートライフ辻堂店</div>
             <div class="form-footer">
-                <button type="button" @click="back" v-if="confirmMode">修正</button>
-                <button type="submit" v-if="!confirmMode">確認</button>
+                <button type="button" @click="back" v-if="confirmMode">＜</button>
+                <button type="submit" v-if="!confirmMode">作成</button>
                 
-                <button type="submit" v-else>リセット</button>
+                <button type="submit" v-else>＞</button>
             </div>
         </form>
     </div>
@@ -586,6 +647,8 @@ dt::after{
 
                 // 入力項目の値
                 Customer: '',
+                Customer_type: '',
+                Member_No: '',
 
                 // 時間設定
                 Date :'',
@@ -633,7 +696,7 @@ dt::after{
 
             },
             methods: {
-                /**
+                /*
                  * フォーム送信時
                  */
                 submit: function(e) {
@@ -645,7 +708,7 @@ dt::after{
                         // 送信
                     }
                 },
-                /**
+                /*
                  * 「戻る」ボタンクリック時
                  */
                 back: function() {
