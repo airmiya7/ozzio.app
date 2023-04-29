@@ -177,7 +177,7 @@ dt::after{
                             {{Date}}
                         </span>
                         <span v-else>
-                            <input type="date" name="Date" size="10" placeholder="" v-model="Date">
+                            <input type="date" name="Date" size="10" v-model="Date">
                         </span>
                     </td>
                 </tr>
@@ -188,7 +188,7 @@ dt::after{
                             {{inspector}}
                         </span>
                         <span v-else>
-                            <input type="text" name="inspector" class="full-field" placeholder="" v-model="inspector">
+                            <input type="text" name="inspector" size="10" v-model="inspector">
                         </span>
                     </td>
                 </tr>
@@ -198,7 +198,7 @@ dt::after{
                         <span v-if="confirmMode">
                             <dl>
                                 <dt>メーカー</dt>
-                                <dd>{{Maker_name}}</dd>
+                                <dd>{{Maker_name}}{{Maker_name_other}}</dd>
                                 <dt>型番</dt>
                                 <dd>{{Model_name}}</dd>
                                 <dt>シリアルNo.</dt>
@@ -208,11 +208,32 @@ dt::after{
                         <span v-else>
                                 <dl>
                                     <dt>メーカー</dt>
-                                    <dd><input type="text" name="Maker_name" size="20" placeholder="" v-model="Maker_name"></dd>
+                                    <dd>
+                                        <select v-model="Maker_name" name="Maker_name">
+                                            <option>Apple</option>
+                                            <option>NEC</option>
+                                            <option>EPSON</option>
+                                            <option>ASUS</option>
+                                            <option>Acer</option>
+                                            <option>SONY</option>
+                                            <option>DELL</option>
+                                            <option>TOSHIBA</option>
+                                            <option>VAIO</option>
+                                            <option>Panasonic</option>
+                                            <option>HP</option>
+                                            <option>Fujitsu</option>
+                                            <option>Microsoft</option>
+                                            <option>mouse</option>
+                                            <option>LENOVO</option>
+                                            <option>自作PC</option>
+                                            <option>その他</option>
+                                        </select>
+                                        <input type="text" name="Maker_name_other" size="20" placeholder="その他を選択時のみ入力" v-model="Maker_name_other">
+                                    </dd>
                                     <dt>型番</dt>
-                                    <dd><input type="text" name="Model_name" size="20" placeholder="" v-model="Model_name"></dd>
+                                    <dd><input type="text" name="Model_name" size="20" v-model="Model_name"></dd>
                                     <dt>シリアルNo.</dt>
-                                    <dd><input type="text" name="Serial_number" size="20" placeholder="" v-model="Serial_number"></dd>
+                                    <dd><input type="text" name="Serial_number" size="20" v-model="Serial_number"></dd>
                                 </dl>
                         </span>
                     </td>
@@ -235,21 +256,21 @@ dt::after{
                             ログインパスワードが分からなくなった
                             インターネットに繋がらない
                             LINEや写真のデータをバックアップしたい
-                            <textarea type="textarea" name="interview" class="full-field" placeholder="" v-model="interview" style="height: 200px;"></textarea>
+                            <textarea type="textarea" name="interview" class="full-field" v-model="interview" style="height: 200px;"></textarea>
                         </span>
                     </td>
                 </tr>
                 <tr><th>診断結果</th><td>
                     <span v-if="confirmMode" id="text-area">{{Diagnosis}}</span>
                     <span v-else>
-                        <textarea type="textarea" name="Diagnosis" class="full-field" placeholder="" v-model="Diagnosis" style="height: 400px;"></textarea>
+                        <textarea type="textarea" name="Diagnosis" class="full-field" v-model="Diagnosis" style="height: 400px;"></textarea>
                     </span>
                 </td></tr>
                 <tr>
                     <th>OS 種類</th>
                     <td>
                         <span v-if="confirmMode">
-                            {{OS}}
+                            {{OS}}{{OS_other}}
                         </span>
                         <span v-else>
                             <select v-model="OS" name="OS">
@@ -283,7 +304,32 @@ dt::after{
                                 <option>Mac OS X 10.2 Jaguar</option>
                                 <option>Mac OS X 10.1 Puma</option>
                                 <option>Mac OS X 10.0 Cheetah</option>
+                                <option>iOS 16</option>
+                                <option>iOS 15</option>
+                                <option>iOS 14</option>
+                                <option>iOS 13</option>
+                                <option>iOS 12</option>
+                                <option>iOS 11</option>
+                                <option>iOS 10</option>
+                                <option>iOS 9</option>
+                                <option>iOS 8以前</option>
+                                <option>iPadOS 16</option>
+                                <option>iPadOS 15</option>
+                                <option>iPadOS 14</option>
+                                <option>iPadOS 13</option>
+                                <option>Android 13 Tiramisu</option>
+                                <option>Android 12 S</option>
+                                <option>Android 11 R</option>
+                                <option>Android 10 Q</option>
+                                <option>Android 9 Pie</option>
+                                <option>Android 8.1 Oreo</option>
+                                <option>Android 8 Oreo</option>
+                                <option>Android 7.1 Nougat</option>
+                                <option>Android 7 Nougat</option>
+                                <option>Android 6以前</option>
+                                <option>その他</option>
                             </select>
+                            <input type="text" name="OS_other" size="20" placeholder="その他を選択時のみ入力" v-model="OS_other">
                         </span>
                     </td>
                 </tr>
@@ -427,7 +473,7 @@ dt::after{
                         <span v-else>
                             <dl>
                                 <dt>CPU</dt>
-                                <dd><input type="text" name="CPU_Name" size="20" placeholder="" v-model="CPU_Name"></dd>
+                                <dd><input type="text" name="CPU_Name" size="20" v-model="CPU_Name"></dd>
                                 <dt>メモリー容量</dt>
                                 <dd>
                                     <select v-model="Memory_Size" name="Memory_Size">
@@ -493,13 +539,13 @@ dt::after{
                         <span v-else>
                             <dl>
                                 <dt>HDD/SSD名</dt>
-                                <dd><input type="text" name="HDD_Name" size="20" placeholder="" v-model="HDD_Name"></dd>
+                                <dd><input type="text" name="HDD_Name" size="20" v-model="HDD_Name"></dd>
                                 <dt>容量</dt>
-                                <dd><input type="text" name="HDD_Size" size="20" placeholder="" v-model="HDD_Size">GB</dd>
+                                <dd><input type="text" name="HDD_Size" size="20" v-model="HDD_Size">GB</dd>
                                 <dt>使用時間</dt>
-                                <dd><input type="text" name="HDD_Count" size="20" placeholder="" v-model="HDD_Count">回</dd>
+                                <dd><input type="text" name="HDD_Count" size="20" v-model="HDD_Count">回</dd>
                                 <dt>起動回数</dt>
-                                <dd><input type="text" name="HDD_Usage" size="20" placeholder="" v-model="HDD_Usage">時間</dd>
+                                <dd><input type="text" name="HDD_Usage" size="20" v-model="HDD_Usage">時間</dd>
                                 <dt>HDD状態</dt>
                                 <dd>
                                     <select v-model="HDD_Status" name="HDD_Status">
@@ -546,6 +592,7 @@ dt::after{
 
                 // 型番等
                 Maker_name: '',
+                Maker_name_other: '',
                 Model_name: '',
                 Serial_number: '',
 
@@ -555,6 +602,7 @@ dt::after{
 
                 // System_Status
                 OS: '',
+                OS_other: '',
                 OS_ver: '',
                 Normal_boot: '',
                 Safe_boot: '',
