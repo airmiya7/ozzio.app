@@ -463,7 +463,7 @@ dt::after{
                                 <dt>CPU</dt>
                                 <dd>{{CPU_Name}}　</dd>
                                 <dt>メモリー容量</dt>
-                                <dd>{{Memory_Size}}　</dd>
+                                <dd>{{Memory_Size}}{{Memory_Size_other}}　</dd>
                                 <dt>メモリー使用量</dt>
                                 <dd>{{Memory_Usage}}　</dd>
                                 <dt>メモリーエラー</dt>
@@ -488,9 +488,12 @@ dt::after{
                                         <option>16GB</option>
                                         <option>24GB</option>
                                         <option>32GB</option>
+                                        <option>48GB</option>
                                         <option>64GB</option>
                                         <option>128GB</option>
+                                        <option></option>
                                     </select>
+                                    <input type="text" name="Memory_Size_other" size="50" placeholder="選択肢がない場合に入力（単位必須：GB等）" v-model="AnchVirus_other">
                                 </dd>
                                 <dt>メモリー使用量</dt>
                                 <dd>
@@ -615,6 +618,7 @@ dt::after{
                 CPU_Name: '',
                 Memory_Usage: '',
                 Memory_Size: '',
+                Memory_Size_other: '',
                 Memory_Status: '',
                 HDD_Name: '',
                 HDD_Size: '',
