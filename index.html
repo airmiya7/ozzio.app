@@ -19,7 +19,6 @@ body {
     font-family: sans-serif;
 }
 
-
 h1 {
     font-size: 30px;
     line-height: 30px;
@@ -37,8 +36,13 @@ h2 {
     text-align: center;
     margin: 10px;
 }
-.message {
-    padding: 10px 0;
+
+.depotchan {
+    max-width: 980px;
+    position:absolute;
+    width: 100px;
+    top:3%;
+    right:3%;
 }
 
 /* 入力項目 */
@@ -163,6 +167,12 @@ dt::after{
     background-position: bottom;
     background-position: right;
 }
+#sign-hdd {
+    background-image: url(images/hdd.gif);
+    background-repeat:no-repeat;
+    background-position: bottom;
+    background-position: right;
+}
 
 /* テキスト改行 */
 #text-area {
@@ -178,7 +188,6 @@ dt::after{
 <body>
     <div id="app">
         <form method="POST" @submit="submit">
-
             <h1>
                 PC診断処方箋
                 <span v-if="confirmMode">
@@ -187,6 +196,8 @@ dt::after{
             </h1>
             <h2>パーソナル</h2>
             <h2>コンピューター</h2>
+
+            <img src="images/depotchan.gif" class="depotchan">
 
             <table>
                 <tr>
@@ -517,8 +528,8 @@ dt::after{
                 <tr>
                     <th>ハードウェア情報</th>
                     <td>
-                        <span v-if="confirmMode">
-                            <div id="sign-mem">
+                        <div id="sign-mem">
+                            <span v-if="confirmMode">
                                 <dl>
                                     <dt>CPU</dt>
                                     <dd>{{CPU_Name}}　</dd>
@@ -529,101 +540,101 @@ dt::after{
                                     <dt>メモリーエラー</dt>
                                     <dd>{{Memory_Status}}　</dd>
                                 </dl>
-                            </div>
-                        </span>
-                        <span v-else>
-                            <div id="sign-mem">
-                            <dl>
-                                <dt>CPU</dt>
-                                <dd><input type="text" name="CPU_Name" size="20" v-model="CPU_Name"></dd>
-                                <dt>メモリー容量</dt>
-                                <dd>
-                                    <select v-model="Memory_Size" name="Memory_Size">
-                                        <option>512MB</option>
-                                        <option>1GB</option>
-                                        <option>2GB</option>
-                                        <option>4GB</option>
-                                        <option>6GB</option>
-                                        <option>8GB</option>
-                                        <option>10GB</option>
-                                        <option>12GB</option>
-                                        <option>16GB</option>
-                                        <option>24GB</option>
-                                        <option>32GB</option>
-                                        <option>48GB</option>
-                                        <option>64GB</option>
-                                        <option>128GB</option>
-                                        <option></option>
-                                    </select>
-                                    <input type="text" name="Memory_Size_other" size="50" placeholder="選択肢がない場合に入力（単位必須：GB等）" v-model="Memory_Size_other">
-                                </dd>
-                                <dt>メモリー使用量</dt>
-                                <dd>
-                                    <select v-model="Memory_Usage" name="Memory_Usage">
-                                        <option>0%</option>
-                                        <option>10%</option>
-                                        <option>20%</option>
-                                        <option>30%</option>
-                                        <option>40%</option>
-                                        <option>50%</option>
-                                        <option>60%</option>
-                                        <option>70%</option>
-                                        <option>80%</option>
-                                        <option>90%</option>
-                                        <option>100%</option>
-                                    </select>
-                                </dd>
-                                <dt>メモリーエラー</dt>
-                                <dd>
-                                    <input type="radio" name="Memory_Status" v-model="Memory_Status" value="あり" checked="checked">
-                                    <label for="あり">あり</label>
-                                    <input type="radio" name="Memory_Status" v-model="Memory_Status" value="なし">
-                                    <label for="なし">なし</label>
-                                </dd>
-                            </dl>
+                            </span>
+                            <span v-else>
+                                <dl>
+                                    <dt>CPU</dt>
+                                    <dd><input type="text" name="CPU_Name" size="20" v-model="CPU_Name"></dd>
+                                    <dt>メモリー容量</dt>
+                                    <dd>
+                                        <select v-model="Memory_Size" name="Memory_Size">
+                                            <option>512MB</option>
+                                            <option>1GB</option>
+                                            <option>2GB</option>
+                                            <option>4GB</option>
+                                            <option>6GB</option>
+                                            <option>8GB</option>
+                                            <option>10GB</option>
+                                            <option>12GB</option>
+                                            <option>16GB</option>
+                                            <option>24GB</option>
+                                            <option>32GB</option>
+                                            <option>48GB</option>
+                                            <option>64GB</option>
+                                            <option>128GB</option>
+                                            <option></option>
+                                        </select>
+                                        <input type="text" name="Memory_Size_other" size="50" placeholder="選択肢がない場合に入力（単位必須：GB等）" v-model="Memory_Size_other">
+                                    </dd>
+                                    <dt>メモリー使用量</dt>
+                                    <dd>
+                                        <select v-model="Memory_Usage" name="Memory_Usage">
+                                            <option>0%</option>
+                                            <option>10%</option>
+                                            <option>20%</option>
+                                            <option>30%</option>
+                                            <option>40%</option>
+                                            <option>50%</option>
+                                            <option>60%</option>
+                                            <option>70%</option>
+                                            <option>80%</option>
+                                            <option>90%</option>
+                                            <option>100%</option>
+                                        </select>
+                                    </dd>
+                                    <dt>メモリーエラー</dt>
+                                    <dd>
+                                        <input type="radio" name="Memory_Status" v-model="Memory_Status" value="あり" checked="checked">
+                                        <label for="あり">あり</label>
+                                        <input type="radio" name="Memory_Status" v-model="Memory_Status" value="なし">
+                                        <label for="なし">なし</label>
+                                    </dd>
+                                </dl>
+                            </span>
                         </div>
-                        </span>
                     </td>
                 </tr>
                 <tr>
                     <th>HDD/SSD 状態</th>
                     <td>
-                        <span v-if="confirmMode">
-                            <dl>
-                                <dt>HDD/SSD名</dt>
-                                <dd>{{HDD_Name}}　</dd>
-                                <dt>容量</dt>
-                                <dd>{{HDD_Size}}GB</dd>
-                                <dt>起動回数</dt>
-                                <dd>{{HDD_Count}}回</dd>
-                                <dt>使用時間</dt>
-                                <dd>{{HDD_Usage}}時間</dd>
-                                <dt>HDD状態</dt>
-                                <dd>{{HDD_Status}}　</dd>
-                            </dl>
-                        </span>
-                        <span v-else>
-                            <dl>
-                                <dt>HDD/SSD名</dt>
-                                <dd><input type="text" name="HDD_Name" size="20" v-model="HDD_Name"></dd>
-                                <dt>容量</dt>
-                                <dd><input type="text" name="HDD_Size" size="20" v-model="HDD_Size">GB</dd>
-                                <dt>起動回数</dt>
-                                <dd><input type="text" name="HDD_Count" size="20" v-model="HDD_Count">回</dd>
-                                <dt>使用時間</dt>
-                                <dd><input type="text" name="HDD_Usage" size="20" v-model="HDD_Usage">時間</dd>
-                                <dt>HDD状態</dt>
-                                <dd>
-                                    <select v-model="HDD_Status" name="HDD_Status">
-                                        <option>S.M.A.R.T 正常</option>
-                                        <option>S.M.A.R.T 正常/ファイルシステム異常：要データ調査</option>
-                                        <option>S.M.A.R.T 異常/ファイルシステム正常：データ取り出し可</option>
-                                        <option>S.M.A.R.T 異常/ファイルシステム異常：要データ調査</option>
-                                        <option>BIOS認識せず</option>
-                                    </select>
-                                </dd>
-                            </dl>
-                        </span>
+                        <div id="sign-hdd">
+                            <span v-if="confirmMode">
+                                <dl>
+                                    <dt>HDD/SSD名</dt>
+                                    <dd>{{HDD_Name}}　</dd>
+                                    <dt>容量</dt>
+                                    <dd>{{HDD_Size}}GB</dd>
+                                    <dt>起動回数</dt>
+                                    <dd>{{HDD_Count}}回</dd>
+                                    <dt>使用時間</dt>
+                                    <dd>{{HDD_Usage}}時間</dd>
+                                    <dt>HDD状態</dt>
+                                    <dd>{{HDD_Status}}　</dd>
+                                </dl>
+                            </span>
+                            <span v-else>
+                                <dl>
+                                    <dt>HDD/SSD名</dt>
+                                    <dd><input type="text" name="HDD_Name" size="20" v-model="HDD_Name"></dd>
+                                    <dt>容量</dt>
+                                    <dd><input type="text" name="HDD_Size" size="20" v-model="HDD_Size">GB</dd>
+                                    <dt>起動回数</dt>
+                                    <dd><input type="text" name="HDD_Count" size="20" v-model="HDD_Count">回</dd>
+                                    <dt>使用時間</dt>
+                                    <dd><input type="text" name="HDD_Usage" size="20" v-model="HDD_Usage">時間</dd>
+                                    <dt>HDD状態</dt>
+                                    <dd>
+                                        <select v-model="HDD_Status" name="HDD_Status">
+                                            <option>S.M.A.R.T 正常</option>
+                                            <option>S.M.A.R.T 正常/ファイルシステム異常：要データ調査</option>
+                                            <option>S.M.A.R.T 異常/ファイルシステム正常：データ取り出し可</option>
+                                            <option>S.M.A.R.T 異常/ファイルシステム異常：要データ調査</option>
+                                            <option>BIOS認識せず</option>
+                                        </select>
+                                    </dd>
+                                </dl>
+                            </span>
+                        </div>
                     </td>
                 </tr>
             </table>
