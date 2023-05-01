@@ -278,13 +278,22 @@ dt::after{
                                         <option value="mouse">
                                         <option value="LENOVO">
                                         <option value="自作PC">
-                                        <option value="その他">
                                     </datalist>
                                 </dd>
                                 <dt>型番</dt>
-                                <dd><input type="text" name="Model_name" size="20" v-model="Model_name"></dd>
+                                <dd>
+                                    <input type="text" name="Model_name" list="Model_name_list" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off" v-model="Model_name" size="50">
+                                    <datalist id="Model_name_list">
+                                        <option value="N/A">
+                                    </datalist>
+                                </dd>
                                 <dt>シリアルNo.</dt>
-                                <dd><input type="text" name="Serial_number" size="20" v-model="Serial_number"></dd>
+                                <dd>
+                                    <input type="text" name="Serial_number" list="Serial_number_list" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off" v-model="Serial_number" size="50">
+                                    <datalist id="Serial_number_list">
+                                        <option value="N/A">
+                                    </datalist>
+                                </dd>
                             </dl>
                         </span>
                     </td>
@@ -394,7 +403,6 @@ dt::after{
                                 <option value="Android 7.1 Nougat">
                                 <option value="Android 7 Nougat">
                                 <option value="Android 6以前">
-                                <option value="その他">
                             </datalist>
                         </span>
                     </td>
@@ -448,7 +456,6 @@ dt::after{
                                 <option>ソースネクスト・ウィルスセキュリティ</option>
                                 <option>ESET インターネットセキュリティ</option>
                                 <option>キングソフトセキュリティPro</option>
-                                <option>その他</option>
                                 <option>なし</option>
                             </datalist>
                         </span>
@@ -1105,7 +1112,7 @@ dt::after{
                                 <dl>
                                     <dt>HDD/SSD名</dt>
                                     <dd>
-                                        <input type="text" name="HDD_Name" list="HDD_Name_list" placeholder="テキスト入力もしくはダブルクリック" autocomplete="off" v-model="HDD_Name" size="50">
+                                        <input type="text" name="HDD_Name" list="HDD_Name_list" placeholder="テキスト入力もしくはダブルクリック（型番推奨）" autocomplete="off" v-model="HDD_Name" size="50">
                                         <datalist id="HDD_Name_list">
                                             <option value="SATA HDD">
                                             <option value="SATA 2.5inch SSD">
@@ -1114,7 +1121,39 @@ dt::after{
                                         </datalist>
                                     </dd>
                                     <dt>容量</dt>
-                                    <dd><input type="text" name="HDD_Size" size="20" v-model="HDD_Size">GB</dd>
+                                    <dd>
+                                        <input type="text" name="HDD_Size" list="HDD_Size_list" placeholder="テキスト入力もしくはダブルクリック（単位必須：GB等）" autocomplete="off" v-model="HDD_Size" size="50">
+                                        <datalist id="HDD_Size_list">
+                                            <option value="32GB">
+                                            <option value="64GB">
+                                            <option value="120GB">
+                                            <option value="128GB">
+                                            <option value="160GB">
+                                            <option value="200GB">
+                                            <option value="240GB">
+                                            <option value="250GB">
+                                            <option value="256GB">
+                                            <option value="300GB">
+                                            <option value="320GB">
+                                            <option value="480GB">
+                                            <option value="500GB">
+                                            <option value="512GB">
+                                            <option value="640GB">
+                                            <option value="750GB">
+                                            <option value="960GB">
+                                            <option value="1TB">
+                                            <option value="1024GB">
+                                            <option value="1.5TB">
+                                            <option value="2TB">
+                                            <option value="3TB">
+                                            <option value="4TB">
+                                            <option value="5TB">
+                                            <option value="6TB">
+                                            <option value="7TB">
+                                            <option value="8TB">
+                                        </datalist>
+
+                                    </dd>
                                     <dt>起動回数</dt>
                                     <dd><input type="text" name="HDD_Count" size="20" v-model="HDD_Count">回</dd>
                                     <dt>使用時間</dt>
