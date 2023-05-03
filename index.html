@@ -181,6 +181,31 @@ dt::after{
 </style>
 </head>
 <body>
+    <script type="text/javascript">
+        //今日の日時を表示
+            window.onload = function () {
+                //今日の日時を表示
+                var date = new Date()
+                var year = date.getFullYear()
+                var month = date.getMonth() + 1
+                var day = date.getDate()
+              
+                var toTwoDigits = function (num, digit) {
+                  num += ''
+                  if (num.length < digit) {
+                    num = '0' + num
+                  }
+                  return num
+                }
+                
+                var yyyy = toTwoDigits(year, 4)
+                var mm = toTwoDigits(month, 2)
+                var dd = toTwoDigits(day, 2)
+                var ymd = yyyy + "-" + mm + "-" + dd;
+                
+                document.getElementById("today").value = ymd;
+            }
+    </script>
     <div id="app">
         <form method="POST" @submit="submit">
             <h1>
@@ -228,7 +253,7 @@ dt::after{
                             {{Date}}
                         </span>
                         <span v-else>
-                            <input type="date" name="Date" v-model="Date">
+                            <input type="date" name="Date" v-model="Date" id="today">
                         </span>
                     </td>
                 </tr>
@@ -349,7 +374,7 @@ dt::after{
                     </span>
                 </td></tr>
                 <tr>
-                    <th>OS 種類</th>
+                    <th>OS種類</th>
                     <td>
                         <span v-if="confirmMode">
                             {{OS}}
@@ -415,7 +440,7 @@ dt::after{
                     </td>
                 </tr>
                 <tr>
-                    <th>OS バージョン</th>
+                    <th>OSバージョン</th>
                     <td>
                         <span v-if="confirmMode">
                             {{OS_ver}}
@@ -1395,7 +1420,7 @@ dt::after{
                     </td>
                 </tr>
                 <tr>
-                    <th>HDD/SSD 状態</th>
+                    <th>HDD/SSD状態</th>
                     <td>
                         <div id="sign-hdd">
                             <span v-if="confirmMode">
