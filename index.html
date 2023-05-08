@@ -7,6 +7,15 @@
 <meta name="robots" content="noindex">
 <meta name="googlebot" content="noindex">
 <title>PC診断処方箋</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F61CVQBGFP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-F61CVQBGFP');
+</script>
 <style>
 /* スタイル */
 body {
@@ -189,7 +198,7 @@ dt::after{
                 var year = date.getFullYear()
                 var month = date.getMonth() + 1
                 var day = date.getDate()
-              
+
                 var toTwoDigits = function (num, digit) {
                   num += ''
                   if (num.length < digit) {
@@ -197,7 +206,7 @@ dt::after{
                   }
                   return num
                 }
-                
+
                 var yyyy = toTwoDigits(year, 4)
                 var mm = toTwoDigits(month, 2)
                 var dd = toTwoDigits(day, 2)
