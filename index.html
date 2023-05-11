@@ -1661,13 +1661,17 @@ dt::after{
                                     <dd><input type="text" name="HDD_Usage" size="20" v-model="HDD_Usage">時間</dd>
                                     <dt>HDD状態</dt>
                                     <dd>
-                                        <select v-model="HDD_Status" name="HDD_Status">
-                                            <option>S.M.A.R.T. 正常</option>
-                                            <option>S.M.A.R.T. 正常/ファイルシステム異常：要データ調査</option>
-                                            <option>S.M.A.R.T. 異常/ファイルシステム正常：データ取り出し可</option>
-                                            <option>S.M.A.R.T. 異常/ファイルシステム異常：要データ調査</option>
-                                            <option>BIOS認識せず</option>
-                                        </select>
+                                        <input type="text" name="HDD_Status" list="HDD_Status_list" placeholder="テキスト入力もしくは選択" autocomplete="off" v-model="HDD_Status" size="50">
+                                        <datalist id="HDD_Status_list">
+                                            <option value="S.M.A.R.T. 正常">
+                                            <option value="S.M.A.R.T. 正常/ファイルシステム異常：要データ調査">
+                                            <option value="S.M.A.R.T. 注意/ファイルシステム正常：データ取り出し可">
+                                            <option value="S.M.A.R.T. 注意/ファイルシステム異常：要データ調査">
+                                            <option value="S.M.A.R.T. 異常/ファイルシステム正常：データ取り出し可">
+                                            <option value="S.M.A.R.T. 異常/ファイルシステム異常：要データ調査">
+                                            <option value="BIOS認識せず">
+                                            <option value="S.M.A.R.T. 対象外記録媒体">
+                                        </datalist>
                                     </dd>
                                 </dl>
                             </span>
