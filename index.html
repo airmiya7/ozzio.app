@@ -23,7 +23,7 @@ body {
     max-width: 980px;
     margin: auto;
     padding: 15px;
-    font-size: 12px;
+    font-size: 11px;
     font-family: sans-serif;
 }
 h1 {
@@ -60,17 +60,17 @@ input, textarea, select {
 }
 @media (max-width: 680px) {
     input, textarea, select {
-        font-size: 12px;
+        font-size: 10px;
     }
 }
 /* 手入力、選択肢 */
 input, select {
-    padding: 2.5px;
+    padding: 2px;
     max-width: 100%;
 }
 /* テキストエリア */
 textarea {
-    padding: 2.5px;
+    padding: 2px;
 }
 
 /* 入力項目を伸ばす */
@@ -104,7 +104,7 @@ label {
 
 /* フォーム */
 form {
-    font-size: 12px;
+    font-size: 10px;
 }
 /* フォームテーブル */
 form table {
@@ -127,12 +127,12 @@ form th {
 
 /* フォームパーツ */
 input {
-    margin-top: 2.5px;
-    margin-bottom: 2.5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 select {
-    margin-top: 2.5px;
-    margin-bottom: 2.5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 /* 必須マーク */
@@ -455,7 +455,8 @@ dt::after{
                             {{OS_ver}}
                         </span>
                         <span v-else>
-                            <select v-model="OS_ver" name="OS_ver">
+                            <input type="text" name="OS_ver" list="OS_ver_list" placeholder="テキスト入力もしくは選択" autocomplete="off" v-model="OS_ver" size="50">
+                            <datalist id="OS_ver_list">
                                 <option>Version 22H2</option>
                                 <option>Version 21H2</option>
                                 <option>Version 21H1</option>
@@ -474,7 +475,7 @@ dt::after{
                                 <option>SP2</option>
                                 <option>SP3</option>
                                 <option>SP4</option>
-                            </select>
+                            </datalist>
                         </span>
                     </td>
                 </tr>
